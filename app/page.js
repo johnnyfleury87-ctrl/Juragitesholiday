@@ -16,15 +16,20 @@ function HeroCarousel() {
   ];
 
   useEffect(() => {
+    // Infinite loop carousel - auto-advance every 6 seconds
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleImageError = (idx) => {
     setImageErrors(prev => ({ ...prev, [idx]: true }));
+  };
+
+  const goToSlide = (idx) => {
+    setCurrentSlide(idx);
   };
 
   return (
@@ -40,7 +45,7 @@ function HeroCarousel() {
               backgroundPosition: 'center',
               background: imageErrors[idx] 
                 ? 'linear-gradient(135deg, #0066FF 0%, #1E40AF 100%)' 
-                : (imageErrors[idx] ? 'linear-gradient(135deg, #0066FF 0%, #1E40AF 100%)' : undefined),
+                : undefined,
             }}
             onError={() => handleImageError(idx)}
           >
@@ -61,7 +66,7 @@ function HeroCarousel() {
           <button
             key={idx}
             className={`indicator ${idx === currentSlide ? 'active' : ''}`}
-            onClick={() => setCurrentSlide(idx)}
+            onClick={() => goToSlide(idx)}
             aria-label={`Slide ${idx + 1}`}
           />
         ))}
@@ -149,6 +154,144 @@ function LatestProperties() {
             <p>Aucune propriété disponible pour le moment.</p>
           </div>
         )}
+      </div>
+    </section>
+  );
+}
+
+// Description Section Component
+function DescriptionSection() {
+  return (
+    <section className="description-section">
+      <div className="container">
+        <div className="description-content fade-in-up">
+          <h2>Bienvenue chez JuraGites</h2>
+          <p>
+            Votre référence pour des séjours authentiques et confortables au cœur du Jura. 
+            Nous sélectionnons avec soin chaque propriété pour garantir votre satisfaction et créer 
+            des souvenirs inoubliables. Que vous cherchiez une escapade romantique, une détente en famille 
+            ou une aventure entre amis, JuraGites offre le cadre idéal pour vos vacances.
+          </p>
+          <div className="description-highlights">
+            <div className="highlight-item">
+              <span className="highlight-icon">✓</span>
+              <span>Gîtes soigneusement sélectionnés</span>
+            </div>
+            <div className="highlight-item">
+              <span className="highlight-icon">✓</span>
+              <span>Confort et qualité garantis</span>
+            </div>
+            <div className="highlight-item">
+              <span className="highlight-icon">✓</span>
+              <span>Service client réactif et bienveillant</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Reviews Section Component
+function ReviewsSection() {
+  const reviews = [
+    {
+      name: 'Sophie Martin',
+      comment: 'Séjour magnifique dans une propriété exceptionnelle. Accueil chaleureux et service impeccable!',
+      rating: 5,
+    },
+    {
+      name: 'Jean Dupont',
+      comment: 'JuraGites offre vraiment une expérience premium. Nous reviendrons sans hésiter!',
+      rating: 5,
+    },
+    {
+      name: 'Marie Leclerc',
+      comment: 'Environnement paisible, propriété bien équipée. Parfait pour déconnecter en famille.',
+      rating: 5,
+    },
+    {
+      name: 'Pierre Bernard',
+      comment: 'Très bon rapport qualité-prix. L\'équipe est attentive et réactive.',
+      rating: 4,
+    },
+  ];
+
+  return (
+    <section className="reviews-section">
+      <div className="container">
+        <div className="section-header">
+          <h2 className="fade-in-up">Avis de nos clients</h2>
+          <p className="fade-in-up" style={{ transitionDelay: '0.1s' }}>
+            Découvrez ce que nos clients pensent de JuraGites
+          </p>
+        </div>
+        <div className="reviews-grid">
+          {reviews.map((review, idx) => (
+            <div
+              key={idx}
+              className="review-card fade-in-up"
+              style={{ transitionDelay: `${idx * 0.1}s` }}
+            >
+              <div className="review-rating">
+                {[...Array(review.rating)].map((_, i) => (
+                  <span key={i} className="star">★</span>
+                ))}
+              </div>
+              <p className="review-comment">&quot;{review.comment}&quot;</p>
+              <p className="review-name">— {review.name}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Highlights Section Component
+function HighlightsSection() {
+  const highlights = [
+    {
+      icon: '🏆',
+      title: 'Qualité Premium',
+      desc: 'Sélection rigoureuse des meilleures propriétés',
+    },
+    {
+      icon: '⚡',
+      title: 'Réservation Facile',
+      desc: 'Process de booking simple et rapide en quelques clics',
+    },
+    {
+      icon: '🛡️',
+      title: 'Sécurité 100%',
+      desc: 'Paiements sécurisés et protection du voyageur garantie',
+    },
+    {
+      icon: '🌟',
+      title: 'Support 24/7',
+      desc: 'Notre équipe disponible pour vous avant, pendant et après',
+    },
+  ];
+
+  return (
+    <section className="highlights-section">
+      <div className="container">
+        <div className="section-header">
+          <h2 className="fade-in-up">Pourquoi choisir JuraGites ?</h2>
+        </div>
+        <div className="highlights-grid">
+          {highlights.map((highlight, idx) => (
+            <div
+              key={idx}
+              className="highlight-card fade-in-up"
+              style={{ transitionDelay: `${idx * 0.1}s` }}
+            >
+              <div className="highlight-icon-large">{highlight.icon}</div>
+              <h3>{highlight.title}</h3>
+              <p>{highlight.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -257,6 +400,15 @@ export default function Home() {
 
       {/* Latest Properties */}
       <LatestProperties />
+
+      {/* Description Section */}
+      <DescriptionSection />
+
+      {/* Reviews Section */}
+      <ReviewsSection />
+
+      {/* Highlights Section */}
+      <HighlightsSection />
 
       {/* Experience Section */}
       <ExperienceSection />
