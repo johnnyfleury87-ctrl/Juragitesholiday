@@ -102,24 +102,16 @@ function LatestProperties() {
             {properties.map((prop) => (
               <Link key={prop.id} href={`/logements/${prop.slug}`} className="property-card">
                 <div className="property-image-modern">
-                  <div style={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '48px',
-                  }}>
-                    🏠
-                  </div>
+                  🏠
                 </div>
                 <div className="property-content">
                   <h3>{prop.title}</h3>
                   <p className="location">📍 {prop.location}</p>
                   <div className="property-footer">
                     <span className="price">{prop.price_per_night}€/nuit</span>
-                    <span className="arrow">→</span>
+                    <button className="property-cta">
+                      Découvrir <span className="arrow">→</span>
+                    </button>
                   </div>
                 </div>
               </Link>
