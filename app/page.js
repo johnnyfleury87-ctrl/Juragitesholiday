@@ -6,12 +6,9 @@ import { usePathname } from 'next/navigation';
 import { PublicHeader, PublicFooter } from '@/components/shared';
 import { createClient } from '@/lib/supabase/client';
 
-// Hero Carousel Component
+// Hero Carousel Component - Continuous Marquee
 function HeroCarousel() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [imageErrors, setImageErrors] = useState({});
-  const [imageTimestamp, setImageTimestamp] = useState(Date.now());
-  const [isVisible, setIsVisible] = useState(true);
   
   const images = [
     '/images/hero-1.jpg',
@@ -19,52 +16,8 @@ function HeroCarousel() {
     '/images/hero-3.jpg',
   ];
 
-  // Reset carousel state and force image reload when component is visible
-  useEffect(() => {
-    // Reset to first slide when component mounts
-    setCurrentSlide(0);
-    setImageErrors({});
-    setImageTimestamp(Date.now());
-    
-    // Handle page visibility changes
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        setIsVisible(true);
-        // Force image reload when tab becomes visible
-        setImageTimestamp(Date.now());
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
-
-  // Carousel auto-advance
-  useEffect(() => {
-    if (!isVisible) return;
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % images.length);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, [images.length, isVisible]);
-
   const handleImageError = (idx) => {
     setImageErrors(prev => ({ ...prev, [idx]: true }));
-  };
-
-  const goToSlide = (idx) => {
-    setCurrentSlide(idx);
-  };
-
-  // Add timestamp to prevent image caching issues
-  const getImageUrl = (image) => {
-    return `${image}?t=${imageTimestamp}`;
   };
 
   return (
@@ -72,15 +25,12 @@ function HeroCarousel() {
       <div className="hero-carousel">
         {images.map((image, idx) => (
           <div
-            key={`${idx}-${imageTimestamp}`}
-            className={`carousel-slide ${idx === currentSlide ? 'active' : ''}`}
+            key={idx}
+            className="carousel-slide"
             style={{
-              backgroundImage: imageErrors[idx] ? 'none' : `url(${getImageUrl(image)})`,
+              backgroundImage: imageErrors[idx] ? 'none' : `url(${image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              background: imageErrors[idx] 
-                ? 'linear-gradient(135deg, #0066FF 0%, #1E40AF 100%)' 
-                : undefined,
             }}
             onError={() => handleImageError(idx)}
           >
@@ -89,25 +39,12 @@ function HeroCarousel() {
               <div style={{
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(135deg, #0066FF 0%, #1E40AF 100%)',
+                background: 'linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%)',
               }} />
             )}
           </div>
         ))}
       </div>
-      {/* Carousel indicators */}
-      <div className="carousel-indicators">
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            className={`indicator ${idx === currentSlide ? 'active' : ''}`}
-            onClick={() => goToSlide(idx)}
-            aria-label={`Slide ${idx + 1}`}
-          />
-        ))}
-      </div>
-      {/* Animated gradient overlay */}
-      <div className="carousel-overlay" />
     </div>
   );
 }

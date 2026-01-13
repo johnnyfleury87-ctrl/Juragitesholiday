@@ -1,16 +1,21 @@
 /* Global styles */
 :root {
-  --color-primary: #0066FF;
-  --color-primary-dark: #0052CC;
-  --color-secondary: #1E40AF;
+  --color-primary: #0052E8;
+  --color-primary-light: #3B82F6;
+  --color-primary-dark: #003BA8;
+  --color-secondary: #0F172A;
   --color-accent: #60A5FA;
-  --color-text: #1F2937;
-  --color-text-light: #6B7280;
+  --color-accent-light: #93C5FD;
+  --color-text: #0F172A;
+  --color-text-light: #64748B;
   --color-bg: #FFFFFF;
-  --color-bg-light: #F9FAFB;
-  --color-border: #E5E7EB;
+  --color-bg-light: #F8FAFC;
+  --color-bg-lighter: #F0F4F8;
+  --color-border: #E2E8F0;
   --color-error: #DC2626;
   --color-success: #16A34A;
+  --color-gradient-start: #0052E8;
+  --color-gradient-end: #0080FF;
 }
 
 * {
@@ -127,92 +132,87 @@ html, body {
   color: white;
 }
 
-/* Buttons */
-.btn-primary {
-  background: var(--color-primary);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
+/* Buttons - Unified Design Language */
+.btn-primary,
+.btn-secondary {
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.75rem;
   font-size: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+  cursor: pointer;
   text-decoration: none;
   display: inline-block;
   position: relative;
   overflow: hidden;
-  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid transparent;
 }
 
-.btn-primary:before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.5s, height 0.5s;
+/* Primary Button - Filled Blue */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--color-primary-dark);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 102, 255, 0.3);
-}
-
-.btn-primary:hover:before {
-  width: 300px;
-  height: 300px;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 82, 232, 0.35);
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
 }
 
 .btn-primary:active:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(0, 82, 232, 0.25);
 }
 
 .btn-primary:disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
+/* Secondary Button - Outlined Blue */
 .btn-secondary {
   background: transparent;
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 600;
 }
 
 .btn-secondary:hover:not(:disabled) {
   background: var(--color-primary);
   color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 102, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 82, 232, 0.25);
 }
 
 .btn-secondary:active:not(:disabled) {
-  transform: translateY(-1px);
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(0, 82, 232, 0.15);
 }
 
-.btn-secondary:hover:not(:disabled) {
-  background: var(--color-primary);
-  color: white;
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-header .btn-primary {
+  background: white;
+  color: var(--color-secondary);
+}
+
+.admin-header .btn-primary:hover:not(:disabled) {
+  background: var(--color-bg-light);
+  box-shadow: 0 12px 28px rgba(255, 255, 255, 0.25);
 }
 
 .admin-header .btn-secondary {
-  border-color: #E5E7EB;
-  color: #E5E7EB;
+  border-color: white;
+  color: white;
 }
 
-.admin-header .btn-secondary:hover {
-  background: #E5E7EB;
-  color: #1F2937;
+.admin-header .btn-secondary:hover:not(:disabled) {
+  background: white;
+  color: var(--color-secondary);
+  box-shadow: 0 12px 28px rgba(255, 255, 255, 0.25);
 }
 
 /* Cards */
@@ -497,88 +497,103 @@ html, body {
 
 .hero-section {
   position: relative;
-  height: 100vh;
+  height: 60vh;
+  min-height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background: linear-gradient(135deg, var(--color-bg-lighter) 0%, var(--color-bg-light) 100%);
 }
 
 .hero-carousel-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   height: 100%;
   z-index: 1;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-bg-lighter) 0%, var(--color-bg-light) 100%);
 }
 
 .hero-carousel {
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 .carousel-slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  background-attachment: fixed;
+  position: relative;
+  width: 400px;
+  height: 80%;
+  flex-shrink: 0;
+  border-radius: 1rem;
+  margin: 0 1rem;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 82, 232, 0.15);
+  animation: marquee 40s linear infinite;
+}
+
+.carousel-slide:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.carousel-slide:nth-child(2) {
+  animation-delay: -13.33s;
+}
+
+.carousel-slide:nth-child(3) {
+  animation-delay: -26.66s;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-1400px);
+  }
 }
 
 .carousel-slide.active {
   opacity: 1;
-  z-index: 2;
 }
 
 .carousel-slide.active .carousel-fallback {
-  background: linear-gradient(135deg, #0066FF 0%, #1E40AF 100%);
+  background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
 }
 
 .carousel-fallback {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0066FF 0%, #1E40AF 100%);
+  background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
 }
 
 .carousel-overlay {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: none;
   z-index: 2;
+  display: none;
 }
 
 .carousel-indicators {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.75rem;
-  z-index: 4;
+  display: none;
 }
 
 .indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  display: none;
 }
 
 .indicator.active {
-  background: white;
-  width: 32px;
-  border-radius: 6px;
+  display: none;
 }
 
 .hero-content {
