@@ -80,8 +80,8 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-            <Link href="/" style={{ color: '#4F46E5' }}>Retour à l'accueil</Link>
+          <p style={{ textAlign: "center", marginTop: "1.5rem" }}>
+            <Link href="/" style={{ color: "#4F46E5" }}>Retour à l&apos;accueil</Link>
           </p>
         </div>
       </div>

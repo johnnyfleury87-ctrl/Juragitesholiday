@@ -105,8 +105,8 @@ function ReservationDetailPage({ params }) {
             </div>
 
             {reservation.status === 'pending' && (
-              <div style={{ marginTop: '2rem', padding: '1rem', background: '#FEF3C7', borderRadius: '0.5rem', borderLeft: '4px solid #B45309' }}>
-                <p>Votre demande est en attente d'approbation.</p>
+              <div style={{ marginTop: "2rem", padding: "1rem", background: "#FEF3C7", borderRadius: "0.5rem", borderLeft: "4px solid #B45309" }}>
+                <p>Votre demande est en attente d&apos;approbation.</p>
               </div>
             )}
 

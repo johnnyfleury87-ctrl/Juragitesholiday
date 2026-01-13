@@ -19,6 +19,7 @@ function HeroCarousel() {
       setCurrentSlide((prev) => (prev + 1) % images.length);
     }, 5000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -166,10 +167,10 @@ function ExperienceSection() {
   return (
     <section className="experience-section">
       <div className="container">
-        <div className="section-header" style={{ textAlign: 'center' }}>
-          <h2 className="fade-in-up">L'Expérience JuraGites</h2>
-          <p className="fade-in-up" style={{ transitionDelay: '0.1s', maxWidth: '600px', margin: '0 auto' }}>
-            Nous offrons bien plus que des locations de vacances. C'est une expérience complète.
+        <div className="section-header" style={{ textAlign: "center" }}>
+          <h2 className="fade-in-up">L&apos;Expérience JuraGites</h2>
+          <p className="fade-in-up" style={{ transitionDelay: "0.1s", maxWidth: "600px", margin: "0 auto" }}>
+            Nous offrons bien plus que des locations de vacances. C&apos;est une expérience complète.
           </p>
         </div>
 
@@ -220,18 +221,18 @@ export default function Home() {
         <div className="hero-content">
           <div className="container">
             <div className="hero-text">
-              <h1 className="fade-in-up" style={{ transitionDelay: '0.2s' }}>
+              <h1 className="fade-in-up" style={{ transitionDelay: "0.2s" }}>
                 JuraGites
               </h1>
-              <p className="hero-subtitle fade-in-up" style={{ transitionDelay: '0.3s' }}>
+              <p className="hero-subtitle fade-in-up" style={{ transitionDelay: "0.3s" }}>
                 Découvrez nos gîtes de vacances meublés de luxe dans le Jura
               </p>
-              <div className="hero-buttons fade-in-up" style={{ transitionDelay: '0.4s' }}>
+              <div className="hero-buttons fade-in-up" style={{ transitionDelay: "0.4s" }}>
                 <Link href="/logements" className="btn-primary btn-large">
                   Voir les logements
                 </Link>
                 <Link href="/signup" className="btn-secondary btn-large">
-                  S'inscrire
+                  S&apos;inscrire
                 </Link>
               </div>
             </div>

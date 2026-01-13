@@ -6,9 +6,9 @@ import { PublicHeader } from '@/components/shared';
 const activities = [
   {
     id: 1,
-    title: 'Randonnées',
-    icon: '🥾',
-    description: 'Explorez les plus beaux sentiers du Jura avec des vues panoramiques spectaculaires.',
+    title: "Randonnées",
+    icon: "🥾",
+    description: "Explorez les plus beaux sentiers du Jura avec des vues panoramiques spectaculaires.",
     details: [
       'Sentiers balisés pour tous niveaux',
       'Paysages de montagne époustouflants',
@@ -18,9 +18,9 @@ const activities = [
   },
   {
     id: 2,
-    title: 'Ski',
-    icon: '⛷️',
-    description: 'Domaines skiables accessibles et variés pour tous les niveaux de skieurs.',
+    title: "Ski",
+    icon: "⛷️",
+    description: "Domaines skiables accessibles et variés pour tous les niveaux de skieurs.",
     details: [
       'Pistes pour débutants et confirmés',
       'Remontées mécaniques modernes',
@@ -30,9 +30,9 @@ const activities = [
   },
   {
     id: 3,
-    title: 'Lacs',
-    icon: '💧',
-    description: 'Baignades, pédalo et détente en famille au bord des plus beaux lacs du Jura.',
+    title: "Lacs",
+    icon: "💧",
+    description: "Baignades, pédalo et détente en famille au bord des plus beaux lacs du Jura.",
     details: [
       'Lac de Chalain - le plus grand',
       'Lac de Clairvaux - eaux cristallines',
@@ -42,9 +42,9 @@ const activities = [
   },
   {
     id: 4,
-    title: 'Restaurants',
-    icon: '🍽️',
-    description: 'Découvrez la gastronomie locale avec des restaurants de qualité.',
+    title: "Restaurants",
+    icon: "🍽️",
+    description: "Découvrez la gastronomie locale avec des restaurants de qualité.",
     details: [
       'Cuisine traditionnelle jurassienne',
       'Produits locaux de qualité',
@@ -54,9 +54,9 @@ const activities = [
   },
   {
     id: 5,
-    title: 'Événements',
-    icon: '🎉',
-    description: 'Festivals, marchés locaux et événements culturels toute l\'année.',
+    title: "Événements",
+    icon: "🎉",
+    description: "Festivals, marchés locaux et événements culturels toute l'année.",
     details: [
       'Marchés provençaux réguliers',
       'Festivals d\'été musicaux',
@@ -66,9 +66,9 @@ const activities = [
   },
   {
     id: 6,
-    title: 'Cascades',
-    icon: '💨',
-    description: 'Visitez les plus impressionnantes cascades du Jura en famille.',
+    title: "Cascades",
+    icon: "💨",
+    description: "Visitez les plus impressionnantes cascades du Jura en famille.",
     details: [
       'Cascades de Mouthier-Haute-Pierre',
       'Cascades du Hérisson',
@@ -87,8 +87,8 @@ export default function Activites() {
       <section className="activites-hero">
         <div className="container">
           <h1 className="fade-in-up">Les Activités du Jura</h1>
-          <p className="fade-in-up" style={{ transitionDelay: '0.1s' }}>
-            Un large choix d'activités pour tous les âges et toutes les saisons
+          <p className="fade-in-up" style={{ transitionDelay: "0.1s" }}>
+            Un large choix d&apos;activités pour tous les âges et toutes les saisons
           </p>
         </div>
       </section>
@@ -120,7 +120,7 @@ export default function Activites() {
       {/* CTA Section */}
       <section className="activites-cta">
         <div className="container">
-          <h2>Prêt pour l'aventure ?</h2>
+          <h2>Prêt pour l&apos;aventure ?</h2>
           <p>Réservez votre séjour et découvrez toutes les activités que le Jura a à offrir</p>
           <Link href="/logements" className="btn-primary btn-large">
             Voir les logements disponibles
