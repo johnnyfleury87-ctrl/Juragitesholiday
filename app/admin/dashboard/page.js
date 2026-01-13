@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { AdminHeader } from '@/components/shared';
 import './dashboard.css';
@@ -76,9 +76,9 @@ const calculateStats = () => {
 // COMPONENTS
 // ============================================================
 
-function KPICard({ title, value, subtitle, trend, color = 'blue' }) {
+function KPICard({ title, value, subtitle, trend }) {
   return (
-    <div className={`kpi-card kpi-${color}`}>
+    <div className="kpi-card" data-animation="fade-slide">
       <div className="kpi-content">
         <h3 className="kpi-title">{title}</h3>
         <div className="kpi-value">{value}</div>
@@ -208,6 +208,7 @@ function ChargeForm({ onAddCharge }) {
 
 export default function AdminDashboard() {
   const [charges, setCharges] = useState(MOCK_CHARGES);
+  const celia = useRef(null);
   const stats = calculateStats();
 
   // Calculate property stats
@@ -231,73 +232,76 @@ export default function AdminDashboard() {
 
   const totalCharges = charges.reduce((sum, c) => sum + c.amount, 0);
 
+  const scrollToCelia = () => {
+    celia.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <>
       <AdminHeader />
       <div className="admin-dashboard">
-        <div className="dashboard-header">
-          <h1>📊 Tableau de Bord Administrateur</h1>
-          <p>Gérez vos logements, réservations et finances</p>
-          <Link href="/admin/logements" className="btn-secondary">↪️ Gestion des logements</Link>
+        <div className="dashboard-header" data-animation="fade">
+          <h1>JuraGites Admin</h1>
+          <p>Gérez vos logements, réservations et finances en temps réel</p>
+          <div className="header-actions">
+            <button onClick={scrollToCelia} className="btn-celia">
+              ✨ Célia, pour ta gestion c&apos;est ici
+            </button>
+            <Link href="/admin/logements" className="btn-secondary">
+              🏠 Gestion des logements
+            </Link>
+          </div>
         </div>
 
         {/* ============================================================ */}
         {/* SECTION 1: KPIs GLOBAUX */}
         {/* ============================================================ */}
 
-        <section className="dashboard-section">
-          <h2>📈 KPIs Globaux</h2>
+        <section className="dashboard-section" data-animation="fade-slide">
+          <h2>📊 KPIs Globaux</h2>
           <div className="kpi-grid">
             <KPICard
               title="Visites du site"
               value={stats.totalVisits.toLocaleString()}
-              subtitle="ce mois"
+              subtitle="derniers 30 jours"
               trend={12}
-              color="blue"
             />
             <KPICard
               title="Utilisateurs inscrits"
               value={stats.totalUsers}
-              subtitle="total"
+              subtitle="total plateforme"
               trend={8}
-              color="green"
             />
             <KPICard
-              title="Total réservations"
-              value={stats.totalBookings}
-              subtitle={`${stats.confirmed} confirmées, ${stats.pending} en attente`}
-              color="purple"
+              title="Réservations confirmées"
+              value={stats.confirmed}
+              subtitle={`${stats.totalBookings} réservations au total`}
             />
             <KPICard
-              title="Annulations"
-              value={stats.totalCancellations}
-              subtitle={`${(stats.totalCancellations / stats.totalBookings * 100).toFixed(1)}% du total`}
+              title="Taux d'annulation"
+              value={`${(stats.totalCancellations / stats.totalBookings * 100).toFixed(1)}%`}
+              subtitle={stats.totalCancellations > 0 ? `${stats.totalCancellations} annulée(s)` : 'Aucune'}
               trend={-5}
-              color="orange"
             />
             <KPICard
               title="Chiffre d'affaires"
               value={`€${stats.totalCA.toLocaleString()}`}
-              subtitle="confirmé"
-              color="green"
+              subtitle="montant confirmé"
             />
             <KPICard
               title="CA encaissé"
               value={`€${stats.caEncashed.toLocaleString()}`}
-              subtitle={`${(stats.caEncashed / stats.totalCA * 100).toFixed(0)}% reçu`}
-              color="blue"
+              subtitle={`${(stats.caEncashed / stats.totalCA * 100).toFixed(0)}% du CA`}
             />
             <KPICard
               title="CA prévisionnel"
               value={`€${stats.caFuture.toLocaleString()}`}
-              subtitle="à venir"
-              color="green"
+              subtitle="réservations à venir"
             />
             <KPICard
-              title="Total charges"
+              title="Charges mensuelles"
               value={`€${totalCharges.toLocaleString()}`}
-              subtitle="ce mois"
-              color="red"
+              subtitle="impact sur rentabilité"
             />
           </div>
         </section>
@@ -306,18 +310,18 @@ export default function AdminDashboard() {
         {/* SECTION 2: RÉSUMÉ RÉSERVATIONS */}
         {/* ============================================================ */}
 
-        <section className="dashboard-section">
+        <section className="dashboard-section" data-animation="fade-slide">
           <h2>📋 Résumé Réservations</h2>
           <div className="summary-grid">
             <div className="summary-card">
               <div className="summary-number">{stats.confirmed}</div>
               <div className="summary-label">Confirmées</div>
-              <div className="summary-value">€{confirmed.reduce((sum, b) => sum + b.total, 0)}</div>
+              <div className="summary-value">€{confirmed.reduce((sum, b) => sum + b.total, 0).toLocaleString()}</div>
             </div>
             <div className="summary-card">
               <div className="summary-number">{stats.pending}</div>
               <div className="summary-label">En attente</div>
-              <div className="summary-value">€{MOCK_BOOKINGS.filter(b => b.status === 'pending').reduce((sum, b) => sum + b.total, 0)}</div>
+              <div className="summary-value">€{MOCK_BOOKINGS.filter(b => b.status === 'pending').reduce((sum, b) => sum + b.total, 0).toLocaleString()}</div>
             </div>
             <div className="summary-card">
               <div className="summary-number">{stats.cancelled}</div>
@@ -325,12 +329,12 @@ export default function AdminDashboard() {
               <div className="summary-value">{(stats.cancelled / stats.totalBookings * 100).toFixed(1)}%</div>
             </div>
             <div className="summary-card">
-              <div className="summary-number">{stats.totalDeposits.toFixed(0)}</div>
+              <div className="summary-number">€{stats.totalDeposits.toFixed(0)}</div>
               <div className="summary-label">Acomptes reçus</div>
               <div className="summary-value">20% du CA</div>
             </div>
             <div className="summary-card">
-              <div className="summary-number">{stats.remainingCA.toFixed(0)}</div>
+              <div className="summary-number">€{stats.remainingCA.toFixed(0)}</div>
               <div className="summary-label">À encaisser</div>
               <div className="summary-value">80% du CA</div>
             </div>
@@ -341,7 +345,7 @@ export default function AdminDashboard() {
         {/* SECTION 3: STATISTIQUES PAR LOGEMENT */}
         {/* ============================================================ */}
 
-        <section className="dashboard-section">
+        <section className="dashboard-section" data-animation="fade-slide">
           <h2>🏠 Performance par Logement</h2>
           <div className="property-grid">
             {MOCK_PROPERTIES.map(prop => (
@@ -354,24 +358,24 @@ export default function AdminDashboard() {
         {/* SECTION 4: ORIGINE DES RÉSERVATIONS */}
         {/* ============================================================ */}
 
-        <section className="dashboard-section">
+        <section className="dashboard-section" data-animation="fade-slide">
           <h2>🌐 Origine des Réservations</h2>
           <div className="chart-container">
             <div className="pie-chart-mock">
-              <div className="pie-segment" style={{ width: `${stats.websiteBookings / stats.totalBookings * 100}%`, backgroundColor: '#3B82F6' }}>
+              <div className="pie-segment" style={{ width: `${stats.websiteBookings / stats.totalBookings * 100}%`, backgroundColor: '#0070F3' }}>
                 <span className="pie-label">Site Web: {stats.websiteBookings}</span>
               </div>
-              <div className="pie-segment" style={{ width: `${stats.airbnbBookings / stats.totalBookings * 100}%`, backgroundColor: '#FF5A5F' }}>
+              <div className="pie-segment" style={{ width: `${stats.airbnbBookings / stats.totalBookings * 100}%`, backgroundColor: '#8B92A9' }}>
                 <span className="pie-label">Airbnb: {stats.airbnbBookings}</span>
               </div>
             </div>
             <div className="chart-legend">
               <div className="legend-item">
-                <span className="legend-color" style={{ backgroundColor: '#3B82F6' }}></span>
+                <span className="legend-color" style={{ backgroundColor: '#0070F3' }}></span>
                 <span>Site Web: {stats.websiteBookings} ({(stats.websiteBookings / stats.totalBookings * 100).toFixed(0)}%)</span>
               </div>
               <div className="legend-item">
-                <span className="legend-color" style={{ backgroundColor: '#FF5A5F' }}></span>
+                <span className="legend-color" style={{ backgroundColor: '#8B92A9' }}></span>
                 <span>Airbnb: {stats.airbnbBookings} ({(stats.airbnbBookings / stats.totalBookings * 100).toFixed(0)}%)</span>
               </div>
             </div>
@@ -379,11 +383,12 @@ export default function AdminDashboard() {
         </section>
 
         {/* ============================================================ */}
-        {/* SECTION 5: CHARGES */}
+        {/* SECTION 5: GESTION CÉLIA - CHARGES */}
         {/* ============================================================ */}
 
-        <section className="dashboard-section">
-          <h2>💰 Gestion des Charges</h2>
+        <section className="dashboard-section" data-animation="fade-slide" ref={celia}>
+          <h2>💰 Gestion des Charges (Célia)</h2>
+          <p className="section-subtitle">Saisir et analyser toutes vos dépenses</p>
           <ChargeForm onAddCharge={(charge) => setCharges([...charges, charge])} />
 
           <div className="charges-table">
@@ -405,7 +410,7 @@ export default function AdminDashboard() {
                   return (
                     <tr key={charge.id}>
                       <td>{charge.date}</td>
-                      <td>{charge.type}</td>
+                      <td className="charge-type-badge">{charge.type}</td>
                       <td>{charge.property || '---'}</td>
                       <td className="amount">€{charge.amount.toFixed(2)}</td>
                       <td style={{ color: impact > 10 ? '#DC2626' : '#059669' }}>-{impact}%</td>
@@ -418,7 +423,7 @@ export default function AdminDashboard() {
               <span>Total charges:</span>
               <strong>€{totalCharges.toFixed(2)}</strong>
               <span>Marge nette:</span>
-              <strong>€{(stats.totalCA - totalCharges).toFixed(2)}</strong>
+              <strong style={{ color: '#059669' }}>€{(stats.totalCA - totalCharges).toFixed(2)}</strong>
             </div>
           </div>
         </section>
@@ -427,8 +432,8 @@ export default function AdminDashboard() {
         {/* SECTION 6: PRÉVISIONS & EXPORT */}
         {/* ============================================================ */}
 
-        <section className="dashboard-section">
-          <h2>🔮 Prévisions & Export</h2>
+        <section className="dashboard-section" data-animation="fade-slide">
+          <h2>🔮 Prévisions & Export Comptable</h2>
           <div className="forecast-container">
             <div className="forecast-card">
               <h3>Prévision CA (Janvier 2026)</h3>
@@ -437,7 +442,7 @@ export default function AdminDashboard() {
               </div>
               <div className="forecast-text">
                 <strong>€{stats.caFuture.toLocaleString()}</strong> estimé
-                <span>(basé sur {MOCK_FUTURE_BOOKINGS.length} réservations programmées)</span>
+                <span>(basé sur {MOCK_FUTURE_BOOKINGS.length} réservations confirmées)</span>
               </div>
             </div>
             <div className="forecast-card">
