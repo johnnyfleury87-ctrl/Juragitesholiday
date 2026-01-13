@@ -2,15 +2,14 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/activites/page": "app/activites/page.js",
   "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/admin/logements/new/page": "app/admin/logements/new/page.js",
   "/admin/logements/[id]/page": "app/admin/logements/[id]/page.js",
+  "/admin/logements/new/page": "app/admin/logements/new/page.js",
   "/admin/logements/page": "app/admin/logements/page.js",
-  "/admin/operations/page": "app/admin/operations/page.js",
   "/admin/login/page": "app/admin/login/page.js",
   "/admin/page": "app/admin/page.js",
   "/admin/reservations/[id]/page": "app/admin/reservations/[id]/page.js",
-  "/admin/reservations/page": "app/admin/reservations/page.js",
   "/app/page": "app/app/page.js",
+  "/admin/reservations/page": "app/admin/reservations/page.js",
   "/app/profile/page": "app/app/profile/page.js",
   "/app/reservations/[id]/page": "app/app/reservations/[id]/page.js",
   "/app/reservations/page": "app/app/reservations/page.js",
@@ -18,5 +17,6 @@
   "/logements/page": "app/logements/page.js",
   "/login/page": "app/login/page.js",
   "/page": "app/page.js",
-  "/signup/page": "app/signup/page.js"
+  "/signup/page": "app/signup/page.js",
+  "/admin/operations/page": "app/admin/operations/page.js"
 }

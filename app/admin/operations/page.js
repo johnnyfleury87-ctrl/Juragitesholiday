@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/supabase/client';
 import styles from './operations.module.css';
 
 export default function OperationsPage() {
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const [activeTab, setActiveTab] = useState('arrivals');
   const [properties, setProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -348,7 +348,7 @@ function InventoryTab({ items, propertyId, supabase }) {
       </div>
 
       {items.length === 0 && (
-        <p className={styles.empty}>Aucun item d'inventaire. Commencez par en ajouter.</p>
+        <p className={styles.empty}>Aucun item d&apos;inventaire. Commencez par en ajouter.</p>
       )}
     </div>
   );
@@ -502,7 +502,7 @@ function LinensTab({ linensData, propertyId, supabase }) {
     status: 'Disponible'
   });
 
-  const linens_types = ['Draps', 'Serviettes', 'Housses de couette', 'Taies d\'oreiller', 'Autre'];
+  const linens_types = ['Draps', 'Serviettes', 'Housses de couette', 'Taies d&apos;oreiller', 'Autre'];
   const statuses = ['Disponible', 'Propre', 'Sale', 'En lavage', 'Manquant'];
 
   const handleAddLinens = async (e) => {

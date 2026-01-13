@@ -181,7 +181,7 @@ La migration `004_seed_operational_data.sql` ajoute automatiquement :
 ```
 
 ### Dépendances
-- `@supabase/auth-helpers-nextjs` (déjà installé)
+- `@supabase/supabase-js` (déjà installé)
 - `next` (déjà installé)
 
 ### Variables d'environnement
