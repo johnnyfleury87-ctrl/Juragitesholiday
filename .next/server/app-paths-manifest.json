@@ -1,5 +1,6 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/activites/page": "app/activites/page.js",
   "/admin/dashboard/page": "app/admin/dashboard/page.js",
   "/admin/logements/[id]/page": "app/admin/logements/[id]/page.js",
   "/admin/logements/new/page": "app/admin/logements/new/page.js",
@@ -17,6 +18,5 @@
   "/logements/page": "app/logements/page.js",
   "/login/page": "app/login/page.js",
   "/page": "app/page.js",
-  "/signup/page": "app/signup/page.js",
-  "/activites/page": "app/activites/page.js"
+  "/signup/page": "app/signup/page.js"
 }

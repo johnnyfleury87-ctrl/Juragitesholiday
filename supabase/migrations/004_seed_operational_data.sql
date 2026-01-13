@@ -1,12 +1,9 @@
 -- ============================================================
--- SEED: OPERATIONAL MANAGEMENT DATA
--- Purpose: Add fictional data for testing operational features
+-- MIGRATION 004: SEED OPERATIONAL MANAGEMENT DATA
+-- Purpose: Add realistic fictional data for testing operational features
 -- ============================================================
 
--- Get org and properties IDs for seeding (assumes existing data from seed_demo_logements)
--- This script assumes at least one org and properties exist
-
--- Insert inventory items for each property
+-- Insert inventory items for each property (15 items per property)
 INSERT INTO inventory_items (property_id, item_name, category, quantity, condition, notes, last_checked_at)
 SELECT 
   p.id,
@@ -19,94 +16,160 @@ SELECT
 FROM properties p
 CROSS JOIN (
   VALUES
-    ('Service de vaisselle 12 pièces', 'Vaisselle', 1, 'ok', 'Assiettes, bols, tasses'),
-    ('Couteaux et fourchettes', 'Vaisselle', 24, 'ok', 'Ensemble couverts'),
-    ('Casseroles', 'Électroménager', 3, 'ok', 'Différentes tailles'),
-    ('Poêles antiadhésives', 'Électroménager', 2, 'ok', 'Bien entretenues'),
-    ('Micro-ondes', 'Électroménager', 1, 'ok', 'Fonctionnel'),
-    ('Cafetière', 'Électroménager', 1, 'à remplacer', 'Filtre usé'),
-    ('Table de salle à manger', 'Mobilier', 1, 'ok', '6 places'),
-    ('Canapé', 'Mobilier', 1, 'ok', 'Bien entretenu'),
-    ('Lits', 'Mobilier', 3, 'ok', 'Sommiers et matelas'),
-    ('Télévision 55"', 'Équipements', 1, 'ok', 'Smart TV'),
-    ('Barbecue', 'Équipements', 1, 'HS', 'À réparer ou remplacer'),
-    ('Lit bébé', 'Équipements', 1, 'ok', 'Avec matelas'),
-    ('Chaises de jardin', 'Mobilier', 6, 'ok', 'En bon état')
+    -- VAISSELLE
+    ('Assiettes plates', 'Vaisselle', 12, 'ok', 'Service complet 12 couverts'),
+    ('Bols céramique', 'Vaisselle', 8, 'ok', 'Petit-déjeuner'),
+    ('Verres', 'Vaisselle', 20, 'ok', 'Différentes tailles'),
+    ('Couverts (fourchettes, cuillères, couteaux)', 'Vaisselle', 30, 'ok', 'Ensemble complet'),
+    ('Théières et cafetières', 'Vaisselle', 2, 'ok', 'Service à thé'),
+    
+    -- ÉLECTROMÉNAGER
+    ('Cafetière Nespresso', 'Électroménager', 1, 'ok', 'Fonctionnelle'),
+    ('Grille-pain 4 fentes', 'Électroménager', 1, 'ok', 'Avec décongélation'),
+    ('Micro-ondes', 'Électroménager', 1, 'ok', 'Puissance 1000W'),
+    ('Lave-vaisselle', 'Électroménager', 1, 'ok', 'Intégré, programme eco'),
+    ('Réfrigérateur', 'Électroménager', 1, 'ok', '400 litres'),
+    
+    -- LITERIE
+    ('Draps housses (140x200)', 'Literie', 8, 'ok', '100% coton'),
+    ('Oreillers (65x65)', 'Literie', 8, 'ok', 'Garnissage plume'),
+    ('Couettes hiver (240x260)', 'Literie', 4, 'ok', 'Couche thermique'),
+    
+    -- ÉQUIPEMENTS
+    ('Télévision 65 pouces', 'Équipements', 1, 'ok', 'Smart TV 4K'),
+    ('Barbecue gaz', 'Équipements', 1, 'à remplacer', 'Bouton thermostat cassé'),
+    ('Chaises de jardin', 'Équipements', 6, 'ok', 'Bois teck'),
+    ('Table de jardin', 'Équipements', 1, 'ok', 'Parasol inclus'),
+    ('Lit bébé', 'Équipements', 1, 'ok', 'Avec matelas hypoallergénique'),
+    ('Chaise haute', 'Équipements', 1, 'ok', 'Pliable'),
+    ('Serviettes de plage', 'Équipements', 10, 'ok', 'Éponge 600g')
 ) AS items(item_name, category, quantity, condition, notes)
 WHERE p.is_published = TRUE
 ON CONFLICT DO NOTHING;
 
--- Insert cleaning sessions scheduled around checkout dates
-INSERT INTO cleaning_sessions (property_id, booking_id, scheduled_date, cleaning_type, duration_hours, is_completed, notes)
+-- Insert cleaning sessions (historical + upcoming)
+-- Past cleaning sessions (3 per property)
+INSERT INTO cleaning_sessions (property_id, scheduled_date, cleaning_type, duration_hours, is_completed, completed_at, notes)
 SELECT 
   p.id,
-  b.id,
-  b.check_out::DATE,
+  (NOW() - INTERVAL '20 days')::DATE,
+  'standard',
+  3,
+  TRUE,
+  NOW() - INTERVAL '20 days',
+  'Ménage standard après départ client'
+FROM properties p
+WHERE p.is_published = TRUE
+ON CONFLICT DO NOTHING;
+
+INSERT INTO cleaning_sessions (property_id, scheduled_date, cleaning_type, duration_hours, is_completed, completed_at, notes)
+SELECT 
+  p.id,
+  (NOW() - INTERVAL '13 days')::DATE,
+  'approfondi',
+  5,
+  TRUE,
+  NOW() - INTERVAL '13 days',
+  'Ménage approfondi : vitres, tapis, canapé'
+FROM properties p
+WHERE p.is_published = TRUE
+ON CONFLICT DO NOTHING;
+
+INSERT INTO cleaning_sessions (property_id, scheduled_date, cleaning_type, duration_hours, is_completed, completed_at, notes)
+SELECT 
+  p.id,
+  (NOW() - INTERVAL '6 days')::DATE,
+  'standard',
+  3,
+  TRUE,
+  NOW() - INTERVAL '6 days',
+  'Ménage standard'
+FROM properties p
+WHERE p.is_published = TRUE
+ON CONFLICT DO NOTHING;
+
+-- Upcoming cleaning sessions (2 per property)
+INSERT INTO cleaning_sessions (property_id, scheduled_date, cleaning_type, duration_hours, is_completed, notes)
+SELECT 
+  p.id,
+  (NOW() + INTERVAL '3 days')::DATE,
   'standard',
   3,
   FALSE,
-  'Ménage standard après départ du client'
+  'Ménage prévu après départ client'
 FROM properties p
-LEFT JOIN bookings b ON p.id = b.property_id AND b.check_out > NOW()::DATE
 WHERE p.is_published = TRUE
-  AND b.id IS NOT NULL
 ON CONFLICT DO NOTHING;
 
--- Insert historical cleaning sessions (completed)
-INSERT INTO cleaning_sessions (property_id, booking_id, scheduled_date, cleaning_type, duration_hours, is_completed, completed_at, notes)
+INSERT INTO cleaning_sessions (property_id, scheduled_date, cleaning_type, duration_hours, is_completed, notes)
 SELECT 
   p.id,
-  b.id,
-  b.check_out::DATE,
-  CASE WHEN RANDOM() < 0.3 THEN 'approfondi' ELSE 'standard' END,
-  CASE WHEN RANDOM() < 0.3 THEN 4.5 ELSE 3 END,
-  TRUE,
-  NOW() - INTERVAL '2 days',
-  'Ménage complété'
+  (NOW() + INTERVAL '10 days')::DATE,
+  'standard',
+  3,
+  FALSE,
+  'Ménage prévu après départ client'
 FROM properties p
-LEFT JOIN bookings b ON p.id = b.property_id AND b.check_out < NOW()::DATE AND b.check_out > (NOW() - INTERVAL '30 days')::DATE
 WHERE p.is_published = TRUE
-  AND b.id IS NOT NULL
 ON CONFLICT DO NOTHING;
 
 -- Insert linens inventory
+-- Multiple entries per type to show variety of statuses
 INSERT INTO linens (property_id, linen_type, quantity, status, last_status_change_at)
-SELECT 
-  p.id,
-  linen_type,
-  quantity,
-  'Disponible',
-  NOW()
-FROM properties p
-CROSS JOIN (
-  VALUES
-    ('Draps', 4),
-    ('Draps', 3),
-    ('Draps', 2),
-    ('Serviettes', 8),
-    ('Serviettes', 6),
-    ('Housses de couette', 3),
-    ('Taies d''oreiller', 6),
-    ('Taies d''oreiller', 4)
-) AS linens_data(linen_type, quantity)
-WHERE p.is_published = TRUE
+SELECT p.id, 'Draps', 4, 'Disponible', NOW() FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Draps', 3, 'Propre', NOW() FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Draps', 2, 'Sale', NOW() - INTERVAL '1 day' FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Serviettes', 12, 'Disponible', NOW() FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Serviettes', 6, 'Sale', NOW() - INTERVAL '2 days' FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Serviettes', 4, 'En lavage', NOW() - INTERVAL '1 day' FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Housses de couette', 4, 'Disponible', NOW() FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Housses de couette', 2, 'Sale', NOW() - INTERVAL '1 day' FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Taies d''oreiller', 8, 'Disponible', NOW() FROM properties p WHERE p.is_published = TRUE
+UNION ALL
+SELECT p.id, 'Taies d''oreiller', 3, 'Sale', NOW() - INTERVAL '1 day' FROM properties p WHERE p.is_published = TRUE
 ON CONFLICT DO NOTHING;
 
--- Update some linens to different statuses for variety
-UPDATE linens
-SET status = 'Sale',
-    last_status_change_at = NOW()
-WHERE property_id IN (
-  SELECT id FROM properties WHERE is_published = TRUE LIMIT 1
-)
-  AND linen_type = 'Serviettes'
-  AND RANDOM() < 0.5;
+-- Insert demo bookings (if none exist)
+-- This ensures we have arrivals/departures to display
+INSERT INTO bookings (property_id, client_id, check_in, check_out, num_guests, total_price, status, created_at)
+SELECT 
+  p.id,
+  (SELECT id FROM auth.users LIMIT 1),  -- Use first user if available
+  (NOW() + INTERVAL '2 days')::DATE,
+  (NOW() + INTERVAL '5 days')::DATE,
+  4,
+  900,
+  'active',
+  NOW()
+FROM properties p
+WHERE p.is_published = TRUE
+  AND NOT EXISTS (
+    SELECT 1 FROM bookings b 
+    WHERE b.property_id = p.id 
+    AND b.check_in >= NOW()::DATE
+  )
+ON CONFLICT DO NOTHING;
 
-UPDATE linens
-SET status = 'En lavage',
-    last_status_change_at = NOW()
-WHERE property_id IN (
-  SELECT id FROM properties WHERE is_published = TRUE OFFSET 1 LIMIT 1
-)
-  AND linen_type = 'Draps'
-  AND RANDOM() < 0.3;
+INSERT INTO bookings (property_id, client_id, check_in, check_out, num_guests, total_price, status, created_at)
+SELECT 
+  p.id,
+  (SELECT id FROM auth.users LIMIT 1),
+  (NOW() + INTERVAL '8 days')::DATE,
+  (NOW() + INTERVAL '12 days')::DATE,
+  6,
+  1400,
+  'active',
+  NOW()
+FROM properties p
+WHERE p.is_published = TRUE
+  AND (SELECT count(*) FROM bookings b WHERE b.property_id = p.id AND b.check_in >= NOW()::DATE) < 2
+ON CONFLICT DO NOTHING;
+
