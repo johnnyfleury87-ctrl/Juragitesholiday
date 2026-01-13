@@ -59,21 +59,32 @@ function HeroCarousel() {
 function LatestProperties() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from('properties')
-        .select('*')
-        .eq('is_published', true)
-        .limit(3)
-        .order('created_at', { ascending: false });
+      try {
+        const supabase = createClient();
+        const { data, error: fetchError } = await supabase
+          .from('properties')
+          .select('*')
+          .eq('is_published', true)
+          .limit(3)
+          .order('created_at', { ascending: false });
 
-      if (!error && data) {
-        setProperties(data);
+        if (fetchError) {
+          console.error('❌ Supabase error fetching properties:', fetchError);
+          setError(`Erreur Supabase: ${fetchError.message}`);
+        } else {
+          console.log('✅ Properties fetched:', data?.length || 0, data);
+          setProperties(data || []);
+        }
+      } catch (err) {
+        console.error('❌ Exception fetching properties:', err);
+        setError(`Erreur: ${err.message}`);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchProperties();
@@ -128,6 +139,13 @@ function LatestProperties() {
                 </div>
               </Link>
             ))}
+          </div>
+        ) : error ? (
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#DC2626' }}>
+            <p>❌ {error}</p>
+            <p style={{ fontSize: '0.875rem', color: '#666', marginTop: '0.5rem' }}>
+              Consultez la console navigateur pour plus de détails.
+            </p>
           </div>
         ) : (
           <div style={{ textAlign: 'center', padding: '2rem' }}>
