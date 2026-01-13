@@ -16,7 +16,7 @@ function HeroCarousel() {
     '/images/hero-3.jpg',
   ];
 
-  // Duplicate images for seamless infinite loop with smooth scrolling
+  // Duplicate images for seamless infinite loop
   const duplicatedImages = [...images, ...images];
 
   const handleImageError = (idx) => {
@@ -26,28 +26,30 @@ function HeroCarousel() {
   return (
     <div className="hero-carousel-wrapper">
       <div className="hero-carousel">
-        {duplicatedImages.map((image, idx) => (
-          <div
-            key={idx}
-            className="carousel-slide"
-            style={{
-              backgroundImage: imageErrors[idx % images.length] ? 'none' : `url(${image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-            onError={() => handleImageError(idx % images.length)}
-            loading="eager"
-          >
-            {/* Fallback gradient if image fails to load */}
-            {imageErrors[idx % images.length] && (
-              <div style={{
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%)',
-              }} />
-            )}
-          </div>
-        ))}
+        <div className="carousel-track">
+          {duplicatedImages.map((image, idx) => (
+            <div
+              key={idx}
+              className="carousel-slide"
+              style={{
+                backgroundImage: imageErrors[idx % images.length] ? 'none' : `url(${image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+              onError={() => handleImageError(idx % images.length)}
+              loading="eager"
+            >
+              {/* Fallback gradient if image fails to load */}
+              {imageErrors[idx % images.length] && (
+                <div style={{
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%)',
+                }} />
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -87,13 +89,23 @@ function LatestProperties() {
           </p>
         </div>
 
-        {loading ? (
+      {loading ? (
           <div className="properties-grid">
             {[1, 2, 3].map((idx) => (
-              <div key={idx} className="property-card skeleton">
-                <div className="skeleton-image" />
-                <div className="skeleton-text" />
-                <div className="skeleton-text" style={{ width: '60%' }} />
+              <div key={idx} className="property-card">
+                <div className="property-image-modern">
+                  🏠
+                </div>
+                <div className="property-content">
+                  <h3>Gîte Premium Jura</h3>
+                  <p className="location">📍 Jura, France</p>
+                  <div className="property-footer">
+                    <span className="price">89€/nuit</span>
+                    <button className="property-cta">
+                      Découvrir <span className="arrow">→</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
