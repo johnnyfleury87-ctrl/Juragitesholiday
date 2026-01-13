@@ -42,15 +42,6 @@
       "static/chunks/120-0045f9dbb900a9e7.js",
       "static/chunks/app/admin/logements/new/page-d95eec99d9fef3e3.js"
     ],
-    "/admin/login/page": [
-      "static/chunks/webpack-03f7c6bc932ce1e3.js",
-      "static/chunks/fd9d1056-87da80e0c187477b.js",
-      "static/chunks/117-baab43fc83142998.js",
-      "static/chunks/main-app-5acc13eaf4cf12f8.js",
-      "static/chunks/223-a3a92bc7d7f47b2c.js",
-      "static/chunks/120-0045f9dbb900a9e7.js",
-      "static/chunks/app/admin/login/page-c11f9dad0b3cccdc.js"
-    ],
     "/admin/logements/page": [
       "static/chunks/webpack-03f7c6bc932ce1e3.js",
       "static/chunks/fd9d1056-87da80e0c187477b.js",
@@ -59,6 +50,15 @@
       "static/chunks/223-a3a92bc7d7f47b2c.js",
       "static/chunks/120-0045f9dbb900a9e7.js",
       "static/chunks/app/admin/logements/page-f9433ab674d93d0a.js"
+    ],
+    "/admin/login/page": [
+      "static/chunks/webpack-03f7c6bc932ce1e3.js",
+      "static/chunks/fd9d1056-87da80e0c187477b.js",
+      "static/chunks/117-baab43fc83142998.js",
+      "static/chunks/main-app-5acc13eaf4cf12f8.js",
+      "static/chunks/223-a3a92bc7d7f47b2c.js",
+      "static/chunks/120-0045f9dbb900a9e7.js",
+      "static/chunks/app/admin/login/page-c11f9dad0b3cccdc.js"
     ],
     "/admin/page": [
       "static/chunks/webpack-03f7c6bc932ce1e3.js",
@@ -157,7 +157,7 @@
       "static/chunks/main-app-5acc13eaf4cf12f8.js",
       "static/chunks/223-a3a92bc7d7f47b2c.js",
       "static/chunks/120-0045f9dbb900a9e7.js",
-      "static/chunks/app/page-af21bc3c0ce3c09e.js"
+      "static/chunks/app/page-fa81fb7f6eff37f5.js"
     ],
     "/signup/page": [
       "static/chunks/webpack-03f7c6bc932ce1e3.js",

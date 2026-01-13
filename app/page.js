@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { PublicHeader, PublicFooter } from '@/components/shared';
 import { createClient } from '@/lib/supabase/client';
 
@@ -333,6 +333,7 @@ function ExperienceSection() {
 export default function Home() {
   const [adminButtonVisible, setAdminButtonVisible] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const carouselKeyRef = useRef(0);
 
   // Force carousel remount when returning to homepage
@@ -357,6 +358,35 @@ export default function Home() {
     window.addEventListener('keydown', handleKeydown);
     return () => window.removeEventListener('keydown', handleKeydown);
   }, []);
+
+  // Ctrl+C admin shortcut with confirmation
+  useEffect(() => {
+    if (pathname !== '/') return;
+
+    const handleCtrlC = (event) => {
+      // Check if Ctrl+C was pressed
+      if (event.ctrlKey && (event.key === 'c' || event.key === 'C')) {
+        // Don't trigger if typing in an input/textarea or contenteditable element
+        const isInEditableField = 
+          ['INPUT', 'TEXTAREA'].includes(event.target.tagName) ||
+          (event.target.getAttribute && event.target.getAttribute('contenteditable') === 'true');
+
+        if (!isInEditableField) {
+          // Prevent the default copy action
+          event.preventDefault();
+
+          // Show confirmation dialog
+          const confirmed = window.confirm('Accéder à la vue admin ?');
+          if (confirmed) {
+            router.push('/admin/login');
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleCtrlC);
+    return () => window.removeEventListener('keydown', handleCtrlC);
+  }, [pathname, router]);
 
   return (
     <>
