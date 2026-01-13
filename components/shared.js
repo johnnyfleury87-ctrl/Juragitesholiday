@@ -35,6 +35,7 @@ export function PublicHeader() {
           <Link href="/activites">Activités</Link>
         </div>
         <div className="nav-right">
+          <Link href="/admin/dashboard" className="btn-celia-nav">⚙️ Célia – Gestion</Link>
           {user ? (
             <>
               <Link href="/app">Tableau de bord</Link>
