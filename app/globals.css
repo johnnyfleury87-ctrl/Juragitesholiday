@@ -1491,6 +1491,52 @@ html, body {
 /* ============= RESPONSIVE ============= */
 
 @media (max-width: 768px) {
+  /* Hero Section Mobile - Fix overlay blocking images */
+  .hero-section {
+    min-height: auto;
+    height: auto;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+  }
+
+  .hero-carousel-wrapper {
+    position: relative;
+    height: 160px;
+    z-index: 1;
+    opacity: 1;
+  }
+
+  .hero-carousel {
+    height: 160px;
+    padding: 1rem 0;
+  }
+
+  .carousel-slide {
+    width: clamp(120px, 20vw, 200px);
+    height: clamp(120px, 20vw, 160px);
+    border-radius: 1rem;
+  }
+
+  .hero-content {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    z-index: 2;
+    padding: 1.5rem 1rem;
+  }
+
+  .hero-text {
+    max-width: 100%;
+    width: 92%;
+    padding: 16px 16px;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 1rem;
+    backdrop-filter: blur(6px);
+    margin: 0 auto;
+  }
+
   .hero-text h1 {
     font-size: 2.5rem;
   }
