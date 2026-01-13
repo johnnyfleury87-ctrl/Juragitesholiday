@@ -16,7 +16,7 @@ function HeroCarousel() {
     '/images/hero-3.jpg',
   ];
 
-  // Duplicate images for seamless infinite loop
+  // Duplicate images for seamless infinite loop with smooth scrolling
   const duplicatedImages = [...images, ...images];
 
   const handleImageError = (idx) => {
@@ -36,6 +36,7 @@ function HeroCarousel() {
               backgroundPosition: 'center',
             }}
             onError={() => handleImageError(idx % images.length)}
+            loading="eager"
           >
             {/* Fallback gradient if image fails to load */}
             {imageErrors[idx % images.length] && (
@@ -374,7 +375,7 @@ export default function Home() {
                   Voir les logements
                 </Link>
                 <Link href="/signup" className="btn-inscription btn-large">
-                  S&apos;inscrire
+                  S&apos;inscrire maintenant
                 </Link>
               </div>
             </div>
