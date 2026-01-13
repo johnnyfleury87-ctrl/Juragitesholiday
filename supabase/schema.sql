@@ -445,11 +445,11 @@ CREATE POLICY "Payments: Admin read for own org" ON payments
   FOR SELECT
   USING (
     EXISTS (
-      SELECT 1 FROM payments p
-        JOIN bookings b ON p.booking_id = b.id
-        JOIN properties prop ON b.property_id = prop.id
-        JOIN org_members om ON prop.org_id = om.org_id
-      WHERE om.user_id = auth.uid()
+      SELECT 1 FROM bookings b
+        JOIN properties p ON b.property_id = p.id
+        JOIN org_members om ON p.org_id = om.org_id
+      WHERE b.id = payments.booking_id
+        AND om.user_id = auth.uid()
         AND om.role = 'admin'
     )
   );
