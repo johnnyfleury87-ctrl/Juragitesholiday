@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { PublicHeader, PublicFooter } from '@/components/shared';
 import { createClient } from '@/lib/supabase/client';
 
@@ -9,20 +10,49 @@ import { createClient } from '@/lib/supabase/client';
 function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imageErrors, setImageErrors] = useState({});
+  const [imageTimestamp, setImageTimestamp] = useState(Date.now());
+  const [isVisible, setIsVisible] = useState(true);
+  
   const images = [
     '/images/hero-1.jpg',
     '/images/hero-2.jpg',
     '/images/hero-3.jpg',
   ];
 
+  // Reset carousel state and force image reload when component is visible
   useEffect(() => {
-    // Infinite loop carousel - auto-advance every 6 seconds
+    // Reset to first slide when component mounts
+    setCurrentSlide(0);
+    setImageErrors({});
+    setImageTimestamp(Date.now());
+    
+    // Handle page visibility changes
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        setIsVisible(true);
+        // Force image reload when tab becomes visible
+        setImageTimestamp(Date.now());
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  // Carousel auto-advance
+  useEffect(() => {
+    if (!isVisible) return;
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length);
     }, 6000);
+
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [images.length, isVisible]);
 
   const handleImageError = (idx) => {
     setImageErrors(prev => ({ ...prev, [idx]: true }));
@@ -32,15 +62,20 @@ function HeroCarousel() {
     setCurrentSlide(idx);
   };
 
+  // Add timestamp to prevent image caching issues
+  const getImageUrl = (image) => {
+    return `${image}?t=${imageTimestamp}`;
+  };
+
   return (
     <div className="hero-carousel-wrapper">
       <div className="hero-carousel">
         {images.map((image, idx) => (
           <div
-            key={idx}
+            key={`${idx}-${imageTimestamp}`}
             className={`carousel-slide ${idx === currentSlide ? 'active' : ''}`}
             style={{
-              backgroundImage: imageErrors[idx] ? 'none' : `url(${image})`,
+              backgroundImage: imageErrors[idx] ? 'none' : `url(${getImageUrl(image)})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               background: imageErrors[idx] 
@@ -352,6 +387,15 @@ function ExperienceSection() {
 
 export default function Home() {
   const [adminButtonVisible, setAdminButtonVisible] = useState(false);
+  const pathname = usePathname();
+  const carouselKeyRef = useRef(0);
+
+  // Force carousel remount when returning to homepage
+  useEffect(() => {
+    if (pathname === '/') {
+      carouselKeyRef.current += 1;
+    }
+  }, [pathname]);
 
   useEffect(() => {
     // Hidden admin access trigger: Ctrl+Shift+A
@@ -375,7 +419,7 @@ export default function Home() {
 
       {/* Hero Section with Carousel */}
       <section className="hero-section">
-        <HeroCarousel />
+        <HeroCarousel key={carouselKeyRef.current} />
         <div className="hero-content">
           <div className="container">
             <div className="hero-text">
