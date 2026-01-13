@@ -19,12 +19,19 @@ export function PublicHeader() {
     checkUser();
   }, []);
 
+  async function handleSignOut() {
+    const supabase = createClient();
+    await signOut(supabase);
+    window.location.href = '/';
+  }
+
   return (
     <header className="header">
       <nav className="nav-container">
         <Link href="/" className="logo">JuraGites</Link>
         <div className="nav-links">
           <Link href="/logements">Logements</Link>
+          <Link href="/activites">Activités</Link>
           {user ? (
             <>
               <Link href="/app">Tableau de bord</Link>

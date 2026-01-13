@@ -1,2 +1,5 @@
 // NOTE: This is a JavaScript project. Rename .ts/.tsx to .js/.jsx as needed.
 // Using TypeScript config for IDE support with checkJs: false equivalent.
+{
+  "extends": ["next/core-web-vitals"]
+}
