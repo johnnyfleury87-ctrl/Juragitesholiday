@@ -16,6 +16,9 @@ function HeroCarousel() {
     '/images/hero-3.jpg',
   ];
 
+  // Duplicate images for seamless infinite loop
+  const duplicatedImages = [...images, ...images];
+
   const handleImageError = (idx) => {
     setImageErrors(prev => ({ ...prev, [idx]: true }));
   };
@@ -23,19 +26,19 @@ function HeroCarousel() {
   return (
     <div className="hero-carousel-wrapper">
       <div className="hero-carousel">
-        {images.map((image, idx) => (
+        {duplicatedImages.map((image, idx) => (
           <div
             key={idx}
             className="carousel-slide"
             style={{
-              backgroundImage: imageErrors[idx] ? 'none' : `url(${image})`,
+              backgroundImage: imageErrors[idx % images.length] ? 'none' : `url(${image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
-            onError={() => handleImageError(idx)}
+            onError={() => handleImageError(idx % images.length)}
           >
             {/* Fallback gradient if image fails to load */}
-            {imageErrors[idx] && (
+            {imageErrors[idx % images.length] && (
               <div style={{
                 width: '100%',
                 height: '100%',
@@ -370,7 +373,7 @@ export default function Home() {
                 <Link href="/logements" className="btn-primary btn-large">
                   Voir les logements
                 </Link>
-                <Link href="/signup" className="btn-secondary btn-large">
+                <Link href="/signup" className="btn-inscription btn-large">
                   S&apos;inscrire
                 </Link>
               </div>

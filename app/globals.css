@@ -194,6 +194,36 @@ html, body {
   cursor: not-allowed;
 }
 
+/* Inscription Button - Special CTA with Red Pulse */
+.btn-inscription {
+  background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%) !important;
+  color: white !important;
+  border: none !important;
+  animation: redPulse 2s ease-in-out infinite;
+}
+
+.btn-inscription:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.05) !important;
+  box-shadow: 0 16px 32px rgba(220, 38, 38, 0.45) !important;
+  animation: none;
+}
+
+.btn-inscription:active:not(:disabled) {
+  transform: translateY(0) scale(1) !important;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35) !important;
+}
+
+@keyframes redPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7),
+                0 10px 24px rgba(220, 38, 38, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(220, 38, 38, 0),
+                0 10px 24px rgba(220, 38, 38, 0.3);
+  }
+}
+
 .admin-header .btn-primary {
   background: white;
   color: var(--color-secondary);
@@ -522,21 +552,30 @@ html, body {
   display: flex;
   align-items: center;
   overflow: hidden;
+  gap: 1rem;
 }
 
 .carousel-slide {
   position: relative;
-  width: 400px;
-  height: 80%;
+  width: 280px;
+  height: 200px;
   flex-shrink: 0;
-  border-radius: 1rem;
-  margin: 0 1rem;
+  border-radius: 0.875rem;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 82, 232, 0.15);
-  animation: marquee 40s linear infinite;
+  box-shadow: 0 8px 24px rgba(0, 82, 232, 0.12);
+  animation: marqueeScroll 60s linear infinite;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .carousel-slide:nth-child(1) {
@@ -544,20 +583,23 @@ html, body {
 }
 
 .carousel-slide:nth-child(2) {
-  animation-delay: -13.33s;
+  animation-delay: -15s;
 }
 
 .carousel-slide:nth-child(3) {
-  animation-delay: -26.66s;
+  animation-delay: -30s;
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-1400px);
-  }
+.carousel-slide:nth-child(4) {
+  animation-delay: -45s;
+}
+
+.carousel-slide:nth-child(5) {
+  animation-delay: 0s;
+}
+
+.carousel-slide:nth-child(6) {
+  animation-delay: -15s;
 }
 
 .carousel-slide.active {
