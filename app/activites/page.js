@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PublicHeader } from '@/components/shared';
+import { PublicHeader, PublicFooter } from '@/components/shared';
 
 const activities = [
   {
@@ -127,6 +127,9 @@ export default function Activites() {
           </Link>
         </div>
       </section>
+
+      {/* Footer */}
+      <PublicFooter />
     </>
   );
 }

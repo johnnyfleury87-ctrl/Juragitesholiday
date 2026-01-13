@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { PublicHeader, PropertyCard } from '@/components/shared';
+import { PublicHeader, PublicFooter, PropertyCard } from '@/components/shared';
 import { createClient } from '@/lib/supabase/client';
 
 export default function LogementsPage() {
@@ -57,6 +57,8 @@ export default function LogementsPage() {
           )}
         </div>
       </div>
+
+      <PublicFooter />
     </>
   );
 }

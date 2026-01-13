@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { PublicHeader, BookingRequestForm } from '@/components/shared';
+import { PublicHeader, PublicFooter, BookingRequestForm } from '@/components/shared';
 import { createClient } from '@/lib/supabase/client';
 
 export default function PropertyDetailPage({ params }) {
@@ -171,6 +171,9 @@ export default function PropertyDetailPage({ params }) {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <PublicFooter />
     </>
   );
 }

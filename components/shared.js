@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { signOut } from '@/lib/supabase/auth';
+import { SocialLinks, SocialLinksFooter } from './SocialLinks';
 
 // Header component for public pages
 export function PublicHeader() {
@@ -29,9 +30,11 @@ export function PublicHeader() {
     <header className="header">
       <nav className="nav-container">
         <Link href="/" className="logo">JuraGites</Link>
-        <div className="nav-links">
+        <div className="nav-center">
           <Link href="/logements">Logements</Link>
           <Link href="/activites">Activités</Link>
+        </div>
+        <div className="nav-right">
           {user ? (
             <>
               <Link href="/app">Tableau de bord</Link>
@@ -45,6 +48,7 @@ export function PublicHeader() {
               <Link href="/signup" className="btn-primary">Inscription</Link>
             </>
           )}
+          <SocialLinks />
         </div>
       </nav>
     </header>
@@ -216,6 +220,45 @@ export function BookingRequestForm({ propertyId, onSubmit, loading }) {
         {loading ? 'Envoi...' : 'Demander une réservation'}
       </button>
     </form>
+  );
+}
+
+// Footer component for public pages
+export function PublicFooter() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="footer">
+      <div className="footer-container">
+        <div className="footer-content">
+          <div className="footer-section">
+            <h3>JuraGites</h3>
+            <p>Découvrez nos gîtes de vacances meublés de luxe dans le Jura.</p>
+          </div>
+          
+          <div className="footer-section">
+            <h4>Liens utiles</h4>
+            <ul>
+              <li><Link href="/logements">Logements</Link></li>
+              <li><Link href="/activites">Activités</Link></li>
+              <li><Link href="/login">Connexion</Link></li>
+            </ul>
+          </div>
+
+          <div className="footer-section">
+            <h4>Contact</h4>
+            <p>Email: info@juragites.com</p>
+            <p>Tél: +33 (0) 3 XX XX XX XX</p>
+          </div>
+        </div>
+
+        <SocialLinksFooter />
+        
+        <div className="footer-bottom">
+          <p>&copy; {currentYear} JuraGites. Tous droits réservés.</p>
+        </div>
+      </div>
+    </footer>
   );
 }
 

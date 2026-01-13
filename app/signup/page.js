@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { PublicHeader } from '@/components/shared';
+import { PublicHeader, PublicFooter } from '@/components/shared';
 import { signUp } from '@/lib/supabase/auth';
 import { createClient } from '@/lib/supabase/client';
 
@@ -86,6 +86,8 @@ export default function SignupPage() {
           </p>
         </div>
       </div>
+
+      <PublicFooter />
     </>
   );
 }

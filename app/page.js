@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { PublicHeader } from '@/components/shared';
+import { PublicHeader, PublicFooter } from '@/components/shared';
 import { createClient } from '@/lib/supabase/client';
 
 // Hero Carousel Component
@@ -427,6 +427,9 @@ export default function Home() {
           </Link>
         </div>
       )}
+
+      {/* Footer */}
+      <PublicFooter />
     </>
   );
 }
