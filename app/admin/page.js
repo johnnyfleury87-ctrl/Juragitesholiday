@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AdminHeader } from '@/components/shared';
 import { withAdminAuth } from '@/lib/guards';
+import { ADMIN_DEV_MODE } from '@/lib/devMode';
 import { createClient } from '@/lib/supabase/client';
 
-function AdminPage() {
+function AdminPage({ isDevMode }) {
   const [stats, setStats] = useState({
     properties: 0,
     bookings: 0,
@@ -70,6 +71,28 @@ function AdminPage() {
 
       <div className="page-container">
         <div className="container">
+          {/* DEV MODE BANNER */}
+          {isDevMode && (
+            <div style={{
+              background: '#fef08a',
+              border: '2px solid #eab308',
+              padding: '1rem',
+              borderRadius: '0.5rem',
+              marginBottom: '2rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem'
+            }}>
+              <span style={{ fontSize: '1.5em' }}>⚙️</span>
+              <div>
+                <strong style={{ color: '#713f12' }}>Mode développement actif</strong>
+                <p style={{ margin: '0.25rem 0 0 0', color: '#92400e', fontSize: '0.9em' }}>
+                  Accès libre sans authentification – Interface de construction
+                </p>
+              </div>
+            </div>
+          )}
+
           <h1>Tableau de bord Admin</h1>
 
           {/* LINK TO NEW DASHBOARD */}
@@ -107,6 +130,9 @@ function AdminPage() {
                   <Link href="/admin/logements" className="btn-secondary">
                     Gérer les logements
                   </Link>
+                  <Link href="/admin/operations" className="btn-secondary">
+                    Gestion opérationnelle
+                  </Link>
                 </div>
               </div>
             </>
@@ -117,6 +143,5 @@ function AdminPage() {
   );
 }
 
-// TEMPORARY: Allow access without auth for demo/development
-// In production, use: export default withAdminAuth(AdminPage);
-export default AdminPage;
+// Apply admin auth guard (bypassed in dev mode)
+export default withAdminAuth(AdminPage);

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { signOut } from '@/lib/supabase/auth';
+import { ADMIN_DEV_MODE } from '@/lib/devMode';
 import { SocialLinks, SocialLinksFooter } from './SocialLinks';
 
 // Header component for public pages
@@ -36,6 +37,11 @@ export function PublicHeader() {
         </div>
         <div className="nav-right">
           <Link href="/admin/dashboard" className="btn-celia-nav">⚙️ Célia – Gestion</Link>
+          {ADMIN_DEV_MODE && (
+            <Link href="/admin" className="btn-primary" style={{ background: '#fbbf24', color: '#000' }}>
+              👨‍💻 Admin (dev)
+            </Link>
+          )}
           {user ? (
             <>
               <Link href="/app">Tableau de bord</Link>
