@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 // Hero Carousel Component
 function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [imageErrors, setImageErrors] = useState({});
   const images = [
     '/images/hero-1.jpg',
     '/images/hero-2.jpg',
@@ -22,6 +23,10 @@ function HeroCarousel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleImageError = (idx) => {
+    setImageErrors(prev => ({ ...prev, [idx]: true }));
+  };
+
   return (
     <div className="hero-carousel-wrapper">
       <div className="hero-carousel">
@@ -30,13 +35,23 @@ function HeroCarousel() {
             key={idx}
             className={`carousel-slide ${idx === currentSlide ? 'active' : ''}`}
             style={{
-              backgroundImage: `url(${image})`,
+              backgroundImage: imageErrors[idx] ? 'none' : `url(${image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              background: imageErrors[idx] 
+                ? 'linear-gradient(135deg, #0066FF 0%, #1E40AF 100%)' 
+                : (imageErrors[idx] ? 'linear-gradient(135deg, #0066FF 0%, #1E40AF 100%)' : undefined),
             }}
+            onError={() => handleImageError(idx)}
           >
             {/* Fallback gradient if image fails to load */}
-            <div className="carousel-fallback" />
+            {imageErrors[idx] && (
+              <div style={{
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(135deg, #0066FF 0%, #1E40AF 100%)',
+              }} />
+            )}
           </div>
         ))}
       </div>

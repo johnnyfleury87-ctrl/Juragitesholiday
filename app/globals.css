@@ -1,8 +1,9 @@
 /* Global styles */
 :root {
-  --color-primary: #4F46E5;
-  --color-primary-dark: #4338CA;
-  --color-secondary: #7C3AED;
+  --color-primary: #0066FF;
+  --color-primary-dark: #0052CC;
+  --color-secondary: #1E40AF;
+  --color-accent: #60A5FA;
   --color-text: #1F2937;
   --color-text-light: #6B7280;
   --color-bg: #FFFFFF;
@@ -447,23 +448,27 @@ html, body {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 0.8s ease-in-out;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .carousel-slide.active {
   opacity: 1;
+  z-index: 2;
 }
 
 .carousel-slide.active .carousel-fallback {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0066FF 0%, #1E40AF 100%);
 }
 
 .carousel-fallback {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0066FF 0%, #1E40AF 100%);
 }
 
 .carousel-overlay {
@@ -611,7 +616,7 @@ html, body {
 .property-image-modern {
   width: 100%;
   height: 250px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0066FF 0%, #60A5FA 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -686,7 +691,7 @@ html, body {
 
 .experience-section {
   padding: 5rem 0;
-  background: linear-gradient(135deg, #f5f7ff 0%, #fff5f7 100%);
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
 }
 
 .features-grid {
@@ -732,7 +737,7 @@ html, body {
 /* ============= ACTIVITES PAGE ============= */
 
 .activites-hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0066FF 0%, #1E40AF 100%);
   color: white;
   padding: 5rem 2rem;
   text-align: center;
@@ -812,7 +817,7 @@ html, body {
 
 .activites-cta {
   padding: 5rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0066FF 0%, #1E40AF 100%);
   color: white;
   text-align: center;
 }
@@ -874,6 +879,69 @@ html, body {
 
 .slide-in-left {
   animation: slideInLeft 1s ease-out;
+}
+
+/* ============= PREMIUM DEPTH & GLASS EFFECTS ============= */
+
+.property-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 102, 255, 0.1);
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: #0066FF;
+}
+
+/* ============= SCROLL-TRIGGERED ANIMATIONS ============= */
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(0, 102, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 4px 30px rgba(0, 102, 255, 0.4);
+  }
 }
 
 /* ============= RESPONSIVE ============= */
